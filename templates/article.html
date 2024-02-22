@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第{{content.chapter_number}}章</title>
+    <style>
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow-y: auto;  /* 垂直滚动条 */
+            height: 80vh;  /* 设置容器高度，超出部分会显示滚动条 */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            column-width: 50%;  /* 将内容分成两列 */
+            column-gap: 40px;  /* 设置列与列之间的间距 */
+            line-height: 1.6;
+            font-size: 150%;  /* 将字体大小增加一倍 */
+            text-align: justify;
+        }
+        .container p {
+            text-indent: 2em;  /* 设置段落缩进为两个字符宽度 */
+        }
+        .center {
+            text-align: center; /* 居中文本 */
+        }
+        .title {
+            font-size: 150%; /* 将标题字体大小设置为正常的1.5倍 */
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        {% set paragraphs = content.content.split('\n') %}
+        {% if paragraphs %}
+            <h1 class="center title">{{ paragraphs[0] }}</h1>
+            {% for paragraph in paragraphs[1:] %}
+                <p>{{ paragraph }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

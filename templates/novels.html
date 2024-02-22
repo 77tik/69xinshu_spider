@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cayoyi的个人书库</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            padding-top: 20px;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .post-preview {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .post-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .post-author {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .post-description {
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .underline {
+            border-top: 2px solid #007bff;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <h1 class="title">Cayoyi的个人书库</h1>
+        <div class="content">
+            {% for article in articles %}
+                <article class="post-preview">
+                    <h2 class="post-title">{{ article.title }}</h2>
+                    <p class="post-author">作者：{{ article.author }}</p>
+                    <p class="post-description">{{ article.description }}</p>
+                    <div class="clearfix">
+                        <input type="checkbox" class="bookmark-checkbox" data-article-id="{{ article.id }}">
+                        <a class="btn btn-primary float-right" href="article/{{ article.id }}">在线阅读</a>
+                    </div>
+                </article>
+                <hr class="underline">
+            {% endfor %}
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 获取所有的收藏复选框
+        var checkboxes = document.querySelectorAll('.bookmark-checkbox');
+
+        // 为每个复选框添加点击事件监听器
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('click', function () {
+                var articleId = this.getAttribute('data-article-id');
+                var isChecked = this.checked;
+
+                // 发送 POST 请求给服务器，将收藏状态更新到数据库
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/toggle_bookmark/' + articleId, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // 如果收藏状态更新成功，弹出相应的消息
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            if (isChecked) {
+                                alert('收藏成功！');
+                            } else {
+                                alert('收藏已取消！');
+                            }
+                        } else {
+                            alert('操作失败，请稍后重试！');
+                        }
+                    } else {
+                        alert('服务器出错，请稍后重试！');
+                    }
+                };
+                xhr.send(JSON.stringify({ checked: isChecked }));
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

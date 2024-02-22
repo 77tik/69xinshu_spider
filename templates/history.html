@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cayoyi的个人书库 - 历史阅读</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .history-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .history-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .history-item h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .history-item p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .history-item form {
+            margin-top: 10px;
+        }
+
+        .history-item button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .history-item button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <h1 class="title">历史阅读</h1>
+        <ul class="history-list">
+            {% for content in contents %}
+            <li class="history-item">
+                <div>
+                    <h2>{{ content.book.title }}</h2>
+                    <p>章节：第{{ content.chapter_id }}章</p>
+                    <form action="{{ url_for('chapters', id=content.book_id, chapter_number=content.chapter_id) }}" method="GET">
+                        <button type="submit">跳转阅读</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

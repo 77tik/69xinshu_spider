@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收藏夹</title>
+</head>
+<body>
+    <h1>收藏夹</h1>
+    <ul>
+        {% for bookmark in bookmarks %}
+        <li>
+            <div>
+                <h2>{{ bookmark.book.title }}</h2>
+                <p>作者：{{ bookmark.book.author }}</p>
+                <p>{{ bookmark.book.description }}</p>
+                <form action="{{ url_for('remove_bookmark', bookmark_id=bookmark.id) }}" method="POST">
+                    <button type="submit">删除收藏</button>
+                </form>
+                <form action="{{ url_for('article', id=bookmark.book_id) }}" method="GET">
+                    <button type="submit">跳转阅读</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
